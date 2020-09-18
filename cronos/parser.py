@@ -50,15 +50,22 @@ def align_sections(data):
     # the offsets for particular sections which we can decipher. This is
     # done by applying a sliding window, and looking for a key phrase (i.e.
     # the russian string for the primary key column).
-    bytes_ = [ord(b) for b in data]
+    # bytes_ = [ord(b) for b in data]
     sections = []
     # guess the offset for each section by using a sentinel
     for offset in range(256):
         buf = []
-        for i, byte in enumerate(bytes_):
+        f = open(f'test_output/betterbyte_{offset}', mode='x')
+        f2 = open(f'test_output/srvbyte_{offset}', mode='x')
+        # for i, byte in enumerate(bytes_):
+        i = 0
+        for byte in bytearray(data):
+            i = i + 1
             # this is from the web (CRO.H)
             # buf[i] = kod[buf[i]] - (unsigned char) i - (unsigned char) offset
             better_byte = (KOD[byte] - i - offset) % 256
+            f.write( chr(better_byte) )
+            # f.write( f"KOD[byte]: {KOD[byte]} , i: {i} ,  offset: {offset}   , better_byte: {better_byte}  , letter: {chr(better_byte)} " )
             buf.append(better_byte)
 
         text = ''.join([chr(b) for b in buf])
@@ -181,9 +188,9 @@ def parse_structure(file_name):
     # definitions.
     with open(file_name, 'rb') as fh:
         data = fh.read()
-    if not data.startswith('CroFile'):
+    if not data.startswith(bytearray('CroFile' , 'cp1251')):
         raise CronosException('Not a CroStru.dat file.')
-    sections = align_sections(data)
+    sections = align_sections(list(data))
     if not len(sections):
         raise CronosException('Could not recover CroStru.dat sections.')
 

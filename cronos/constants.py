@@ -34,4 +34,4 @@ KOD = [0x08, 0x63, 0x81, 0x38, 0xa3, 0x6b, 0x82, 0xa6, 0x18, 0x0d, 0xac, 0xd5,
 
 # Auto-generated and immutable: using this to find valid offsets for data.
 PK_SENTINEL = u'Системный номер'.encode(ENC)
-PK_SENTINEL = chr(len(PK_SENTINEL)) + PK_SENTINEL
+PK_SENTINEL = chr(len(PK_SENTINEL)) + str(PK_SENTINEL)

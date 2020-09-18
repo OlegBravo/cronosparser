@@ -19,4 +19,4 @@ def main(database_dir, target_dir):
     try:
         parse(database_dir, target_dir)
     except CronosException as ex:
-        raise click.ClickException(ex.message)
+        raise click.ClickException(ex)
